@@ -35,6 +35,22 @@
 	</distributionManagement>
 
 	<dependencies>
+
+		<!--json web token heroku 배포용-->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>'
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+		<!--json web token heroku 배포용(완)-->
+
 		<dependency>
 		    <groupId>com.duzon.wehago</groupId>
 		    <artifactId>wehago-framework</artifactId>
