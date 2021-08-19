@@ -3,7 +3,7 @@
   <groupId>org.springframework.samples.service.service</groupId>
   <artifactId>cafe-wiki-spring</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-<!--  <packaging>war</packaging>-->
+  <packaging>war</packaging>
   
     <properties>
 		<!-- Generic properties -->
