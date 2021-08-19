@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Aug 19 10:18:30 KST 2021
+@default-Nexus-http\://172.16.114.177\:8081/nexus/content/groups/public/.lastUpdated=1629335910608
+http\://172.16.114.177\:8081/nexus/content/groups/public/.error=Could not transfer artifact javax.xml.bind\:jaxb-api\:pom\:2.3.1 from/to Nexus (http\://172.16.114.177\:8081/nexus/content/groups/public)\: Transfer failed for http\://172.16.114.177\:8081/nexus/content/groups/public/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.pom
