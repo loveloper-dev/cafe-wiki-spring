@@ -15,6 +15,14 @@
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+	</repositories>
+
 	<distributionManagement>
 		<repository>
 			<id>release</id>
