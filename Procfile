@@ -1,0 +1,1 @@
+web: java -war target/cafe-wiki-spring.war

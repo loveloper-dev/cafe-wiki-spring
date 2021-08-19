@@ -346,7 +346,7 @@
 	<build>
         <defaultGoal>clean install</defaultGoal>
         <directory>${basedir}/target</directory>
-		<finalName>wehago-template</finalName>
+		<finalName>cafe-wiki-spring</finalName>
 		
 		<plugins>
 			<plugin>
