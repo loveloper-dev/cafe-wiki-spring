@@ -4,7 +4,7 @@
 
   <select id="getUserInfo" parameterType="hashmap" resultType="hashmap">
     SELECT user_idx, user_email, user_nm, user_allergy
-    FROM cafe_wiki."user"
+    FROM "user"
     WHERE user_email = #{email}
       AND user_pswd = #{pswd}
   </select>
