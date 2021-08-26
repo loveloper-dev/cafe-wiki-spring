@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duzon.lulu.allergy.mapper.AllergyMapper">
+
+  <select id="getAllergyList" resultType="hashmap">
+      SELECT allergy_idx AS value,
+             allergy_nm AS label
+      FROM allergy
+  </select>
+
+</mapper>
