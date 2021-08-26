@@ -7,4 +7,6 @@ import java.util.HashMap;
 @Repository
 public interface UserMapper {
     HashMap getUserInfo(HashMap<String, Object> param);
+
+    int join(HashMap<String, Object> param);
 }

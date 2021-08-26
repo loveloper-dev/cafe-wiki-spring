@@ -9,4 +9,9 @@
       AND user_pswd = #{pswd}
   </select>
 
+  <insert id="join" parameterType="hashmap">
+    INSERT INTO "user"(user_email, user_pswd, user_nm, user_allergy)
+    values (#{user_email_id} || #{user_email_address}, #{user_pswd}, #{user_nm}, #{user_allergy})
+  </insert>
+
 </mapper>

@@ -36,12 +36,9 @@ public class UserController {
         return null;
     }
 
-//    @ResponseBody
-//    @GetMapping("/get/subject")
-//    public HashMap<String, Object> getSubject(@RequestParam("token") String token) {
-//        String subject = loginService.getSubject(token);
-//        HashMap<String, Object> map = new LinkedHashMap<String, Object>();
-//        map.put("result", subject);
-//        return map;
-//    }
+    @PostMapping("/join")
+    @ResponseBody
+    public LuluResult join(@RequestBody HashMap param) {
+        return userService.join(param);
+    }
 }

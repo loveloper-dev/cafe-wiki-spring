@@ -102,5 +102,22 @@ public class UserService {
         return claimMap;
     }
 
+    public LuluResult join(HashMap param) {
+        LuluResult result = new LuluResult();
+        try {
+            boolean isSuccess = userMapper.join(param) > 0 ;
+            if(isSuccess) {
+                result.setResultMsg("회원가입에 성공하였습니다.");
+            } else {
+                result.setResultCode(500);
+                result.setResultMsg("회원가입 요청은 정상 실행되었으나 저장에 실패하였습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setResultMsg("회원가입 요청에 실패하였습니다.");
+        }
+
+        return result;
+    }
 
 }
