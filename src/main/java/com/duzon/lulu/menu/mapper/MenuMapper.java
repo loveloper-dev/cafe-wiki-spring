@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface MenuMapper {
     List<HashMap> getMenuList(HashMap param);
+
+    HashMap getMenu(HashMap param);
 }

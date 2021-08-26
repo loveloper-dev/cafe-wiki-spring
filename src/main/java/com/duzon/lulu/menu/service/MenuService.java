@@ -17,4 +17,7 @@ public class MenuService {
         return menuMapper.getMenuList(param);
     }
 
+    public HashMap getMenu(HashMap param) {
+        return menuMapper.getMenu(param);
+    }
 }

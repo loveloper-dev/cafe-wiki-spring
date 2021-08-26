@@ -2,9 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duzon.lulu.menu.mapper.MenuMapper">
 
+<!--  <select id="getMenuList" parameterType="hashmap" resultType="hashmap">-->
+<!--    SELECT menu_idx, brand_idx, menu_nm_ko, menu_nm_en, menu_desc, menu_allergy, menu_has_caffeine, menu_img_url-->
+<!--    FROM menu-->
+<!--  </select>-->
+
   <select id="getMenuList" parameterType="hashmap" resultType="hashmap">
-    SELECT menu_idx, brand_idx, menu_nm_ko, menu_nm_en, menu_desc, menu_allergy, menu_has_caffeine, menu_img_url
-    FROM menu
+      SELECT m.menu_idx, b.brand_nm_en, m.menu_nm_ko, m.menu_nm_en,
+             m.menu_allergy, m.menu_has_caffeine, m.menu_img_url,
+             COALESCE((
+                          SELECT TO_CHAR(AVG(star_rating.star_rating), 'FM9.0')
+                          FROM star_rating
+                          WHERE menu_idx = m.menu_idx
+                          GROUP BY menu_idx
+                      ), '0.0') as menu_star_rating,
+             <choose>
+                 <when test="user_idx != null">
+                     (
+                         SELECT
+                                 CASE
+                                 WHEN count(m.menu_idx) > 0
+                                 THEN true
+                                 ELSE false
+                                 END AS menu_heart_rating
+                         FROM heart_rating
+                         WHERE user_idx = #{user_idx}
+                     ) AS menu_heart_rating
+                 </when>
+                 <otherwise>
+                     false AS menu_heart_rating
+                 </otherwise>
+             </choose>
+      FROM menu m JOIN brand b
+      ON (m.brand_idx = b.brand_idx)
+      ORDER BY m.menu_nm_ko
+  </select>
+
+  <select id="getMenu" parameterType="hashmap" resultType="hashmap">
+      SELECT m.menu_idx, b.brand_nm_en, m.menu_nm_ko, m.menu_nm_en, m.menu_desc,
+             m.menu_allergy, m.menu_has_caffeine, m.menu_img_url,
+             COALESCE((
+                          SELECT TO_CHAR(AVG(star_rating.star_rating), 'FM9.0')
+                          FROM star_rating
+                          WHERE menu_idx = m.menu_idx
+                          GROUP BY menu_idx
+                      ), '0.0') AS menu_star_rating,
+             (
+                 SELECT count(*)
+                 FROM heart_rating
+                 WHERE menu_idx = #{menu_idx}
+             ) AS menu_heart_rating,
+             true AS is_clicked_heart,
+             true AS is_clicked_star
+      FROM menu m JOIN brand b
+                    ON (m.brand_idx = b.brand_idx)
+      WHERE menu_idx = #{menu_idx}
   </select>
 
 </mapper>
