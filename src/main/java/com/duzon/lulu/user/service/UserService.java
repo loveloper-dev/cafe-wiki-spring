@@ -83,7 +83,7 @@ public class UserService {
     }
 
     //토큰 검증
-    public Map<String, Object> verifyJWT(String jwt) {
+    public Boolean verifyJWT(String jwt) {
         Map<String, Object> claimMap = null;
         try {
             Claims claims = Jwts.parser()
@@ -92,14 +92,15 @@ public class UserService {
                     .getBody();
 
             claimMap = claims;
-
         } catch (ExpiredJwtException e) { // 토큰이 만료되었을 경우
-            claimMap = new HashMap<>();
-            claimMap.put("error", "token 만료");
+            System.out.println("expiredToken");
+            e.printStackTrace();
         } catch (Exception e) { // 그외 에러났을 경우
-            System.out.println(e);
+            System.out.println("other Error");
+            e.printStackTrace();
         }
-        return claimMap;
+
+        return claimMap != null;
     }
 
     public LuluResult join(HashMap param) {

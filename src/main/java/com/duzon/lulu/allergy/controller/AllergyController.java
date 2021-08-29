@@ -21,4 +21,8 @@ public class AllergyController {
         return allergyService.getAllergyList();
     }
 
+    @GetMapping("/coding")
+    public LuluResult codingAllergy() {
+        return allergyService.codingAllergy();
+    }
 }

@@ -17,7 +17,13 @@ public class MenuController {
 
     @GetMapping("")
     @ResponseBody
-    public List<HashMap> getMenuList(@RequestParam HashMap param) {
+    public LuluResult getMenuListAll(@RequestParam HashMap param) {
+        return menuService.getMenuList(param);
+    }
+
+    @PostMapping("")
+    @ResponseBody
+    public LuluResult getMenuList(@RequestBody HashMap param) {
         return menuService.getMenuList(param);
     }
 

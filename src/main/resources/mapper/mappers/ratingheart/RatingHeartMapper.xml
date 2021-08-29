@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duzon.lulu.heart.mapper.RatingHeartMapper">
+
+  <insert id="insertHeart">
+      INSERT INTO heart_rating(menu_idx, user_idx)
+      VALUES (#{menu_idx}, #{user_idx});
+  </insert>
+
+  <delete id="deleteHeart">
+      DELETE FROM heart_rating
+      WHERE menu_idx = #{menu_idx}
+      AND user_idx = ${user_idx}
+  </delete>
+
+</mapper>

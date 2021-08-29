@@ -8,4 +8,22 @@
       FROM allergy
   </select>
 
+  <select id="getAllergiesFromMenu" resultType="hashmap">
+      SELECT menu_idx, menu_allergy
+      FROM menu
+      WHERE menu_allergy != ''
+  </select>
+
+  <select id="getAllergyIdxMap" resultType="int">
+      SELECT allergy_idx
+      FROM allergy_ref
+      WHERE allergy_ref = #{menu_allergy}
+  </select>
+
+  <update id="updateAllergyStringToCode" parameterType="hashmap">
+      UPDATE menu
+      SET menu_allergy = #{menu_allergy}
+      WHERE menu_idx = #{menu_idx}
+  </update>
+
 </mapper>

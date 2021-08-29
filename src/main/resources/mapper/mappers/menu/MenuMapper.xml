@@ -8,34 +8,53 @@
 <!--  </select>-->
 
   <select id="getMenuList" parameterType="hashmap" resultType="hashmap">
-      SELECT m.menu_idx, b.brand_nm_en, m.menu_nm_ko, m.menu_nm_en,
-             m.menu_allergy, m.menu_has_caffeine, m.menu_img_url,
-             COALESCE((
-                          SELECT TO_CHAR(AVG(star_rating.star_rating), 'FM9.0')
-                          FROM star_rating
-                          WHERE menu_idx = m.menu_idx
-                          GROUP BY menu_idx
+      SELECT *
+      FROM (
+              SELECT m.menu_idx, b.brand_nm_en, m.menu_nm_ko, m.menu_nm_en,
+                      m.menu_allergy, m.menu_has_caffeine, m.menu_img_url,
+                      COALESCE((
+                      SELECT TO_CHAR(AVG(star_rating.star_rating), 'FM9.0')
+                      FROM star_rating
+                      WHERE menu_idx = m.menu_idx
+                      GROUP BY menu_idx
                       ), '0.0') as menu_star_rating,
-             <choose>
-                 <when test="user_idx != null">
-                     (
-                         SELECT
-                                 CASE
-                                 WHEN count(m.menu_idx) > 0
-                                 THEN true
-                                 ELSE false
-                                 END AS menu_heart_rating
-                         FROM heart_rating
-                         WHERE user_idx = #{user_idx}
-                     ) AS menu_heart_rating
-                 </when>
-                 <otherwise>
-                     false AS menu_heart_rating
-                 </otherwise>
-             </choose>
-      FROM menu m JOIN brand b
-      ON (m.brand_idx = b.brand_idx)
-      ORDER BY m.menu_nm_ko
+                      <choose>
+                          <when test='user_idx != null and user_idx neq ""'>
+                              (
+                                  SELECT
+                                          CASE
+                                          WHEN count(menu_idx) > 0
+                                          THEN true
+                                          ELSE false
+                                          END AS is_clicked_heart
+                                  FROM heart_rating
+                                  WHERE user_idx = #{user_idx}
+                                  AND menu_idx = m.menu_idx
+                              ) AS is_clicked_heart
+                          </when>
+                          <otherwise>
+                              false AS is_clicked_heart
+                          </otherwise>
+                      </choose>
+              FROM menu m JOIN brand b
+              ON (m.brand_idx = b.brand_idx)
+              WHERE 1=1
+              <if test='brand_idx != null and brand_idx != 0'>
+                  AND m.brand_idx = #{brand_idx}
+              </if>
+              <if test='keyword != null and keyword neq ""'>
+                  AND (
+                  m.menu_nm_ko like '%' || #{keyword} || '%'
+                  OR
+                  LOWER(m.menu_nm_en) like '%' || LOWER(#{keyword}) || '%'
+                  )
+              </if>
+      ) "outer"
+      -- isShowOnlyHeartDrink 가 true면 heart 체크한 음료만 보게 하기
+<!--      <if test='isShowOnlyHeartDrink != null and isShowOnlyHeartDrink.equals(true)'>-->
+<!--         WHERE is_clicked_heart = true-->
+<!--      </if>-->
+      ORDER BY menu_nm_ko collate "ko_KR.utf8"
   </select>
 
   <select id="getMenu" parameterType="hashmap" resultType="hashmap">

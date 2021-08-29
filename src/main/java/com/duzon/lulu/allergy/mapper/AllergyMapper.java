@@ -10,4 +10,10 @@ public interface AllergyMapper {
 
     List<HashMap> getAllergyList();
 
+    List<HashMap> getAllergiesFromMenu();
+
+    int getAllergyIdxMap(HashMap param);
+
+    int updateAllergyStringToCode(HashMap param);
+
 }
