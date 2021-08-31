@@ -51,9 +51,9 @@
               </if>
       ) "outer"
       -- isShowOnlyHeartDrink 가 true면 heart 체크한 음료만 보게 하기
-<!--      <if test='isShowOnlyHeartDrink != null and isShowOnlyHeartDrink.equals(true)'>-->
-<!--         WHERE is_clicked_heart = true-->
-<!--      </if>-->
+      <if test='isShowOnlyHeartDrink != null and isShowOnlyHeartDrink.equals(true)'>
+         WHERE is_clicked_heart = true
+      </if>
       ORDER BY menu_nm_ko collate "ko_KR.utf8"
   </select>
 
@@ -71,8 +71,35 @@
                  FROM heart_rating
                  WHERE menu_idx = #{menu_idx}
              ) AS menu_heart_rating,
-             true AS is_clicked_heart,
-             true AS is_clicked_star
+              <choose>
+                  <when test='user_idx != null and user_idx neq ""'>
+                      (
+                          SELECT
+                                  CASE
+                                  WHEN count(menu_idx) > 0
+                                  THEN true
+                                  ELSE false
+                                  END AS is_clicked_heart
+                          FROM heart_rating
+                          WHERE user_idx = #{user_idx}
+                          AND menu_idx = #{menu_idx}
+                      ) AS is_clicked_heart,
+                      (
+                          SELECT CASE
+                                  WHEN COUNT(star_rating) > 0
+                                  THEN true
+                                  ELSE false
+                                  END
+                          FROM star_rating
+                          WHERE user_idx = #{user_idx}
+                          AND menu_idx = #{menu_idx}
+                      ) AS is_clicked_star
+                  </when>
+                  <otherwise>
+                      false AS is_clicked_heart,
+                      false AS is_clicked_star
+                  </otherwise>
+              </choose>
       FROM menu m JOIN brand b
                     ON (m.brand_idx = b.brand_idx)
       WHERE menu_idx = #{menu_idx}

@@ -26,6 +26,7 @@ public class MenuService {
                 if(userService.verifyJWT(userInfo.get("jwt").toString())) {
                     List<HashMap> resultList = new ArrayList<>();
 
+                    param.put("user_idx", Integer.parseInt(userInfo.get("user_idx").toString()));
                     List<HashMap> menuList = menuMapper.getMenuList(param);
                     if((Boolean)param.get("isAllergyFiltering")) {
 
@@ -36,11 +37,27 @@ public class MenuService {
                             List<String> unionList = ListUtils.union(user_allergy_arr, menu_allergy_arr);
                             HashSet<String> unionSet = new HashSet<String>(unionList);
                             if(unionList.size() <= unionSet.size()) {
+                                menu.put("isDanger", false);
                                 resultList.add(menu);
                             }
                         }
                     } else {
-                        resultList = menuList;
+
+                        List<String> user_allergy_arr = new ArrayList<>(Arrays.asList(userInfo.get("user_allergy").toString().split(",")));
+                        for(HashMap menu : menuList) {
+                            List<String> menu_allergy_arr = new ArrayList<>(Arrays.asList(menu.get("menu_allergy").toString().split(",")));
+
+                            List<String> unionList = ListUtils.union(user_allergy_arr, menu_allergy_arr);
+                            HashSet<String> unionSet = new HashSet<String>(unionList);
+                            if(unionList.size() <= unionSet.size()) {
+                                menu.put("isDanger", false);
+                            } else {
+                                menu.put("isDanger", true);
+                            }
+                            resultList.add(menu);
+                        }
+
+//                        resultList = menuList;
                     }
 
                     result.setResultData(resultList);

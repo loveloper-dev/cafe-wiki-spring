@@ -2,6 +2,7 @@ package com.duzon.lulu.heart.service;
 
 import com.duzon.common.model.LuluResult;
 import com.duzon.lulu.heart.mapper.RatingHeartMapper;
+import com.duzon.lulu.menu.mapper.MenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,16 @@ public class RatingHeartService {
     @Autowired
     private RatingHeartMapper ratingHeartMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
     public LuluResult insertHeart(HashMap param) {
         LuluResult result = new LuluResult();
         try {
-            ratingHeartMapper.insertHeart(param);
+            int row = ratingHeartMapper.insertHeart(param);
+            if(row > 0) {
+                result.setResultData(menuMapper.getMenu(param));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.setResultCode(500);
@@ -29,7 +36,10 @@ public class RatingHeartService {
     public LuluResult deleteHeart(HashMap param) {
         LuluResult result = new LuluResult();
         try {
-            ratingHeartMapper.deleteHeart(param);
+            int row = ratingHeartMapper.deleteHeart(param);
+            if(row > 0) {
+                result.setResultData(menuMapper.getMenu(param));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.setResultCode(500);
